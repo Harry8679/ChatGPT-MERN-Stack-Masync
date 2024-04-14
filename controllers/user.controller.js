@@ -2,7 +2,7 @@
 const register = async(req, res) => {
     res.json({
         status: true,
-        message: 'Registration was successful'
+        message: 'Registration was successful for a new account'
     });
 }
 
