@@ -14,6 +14,10 @@ userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    trialPeriod: {
+        type: Number,
+        default: 3 // 3 days
+    },
     trialService: {
         type: Boolean,
         default: false,
