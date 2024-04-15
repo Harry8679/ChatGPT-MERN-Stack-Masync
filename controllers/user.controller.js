@@ -20,10 +20,11 @@ const register = async(req, res) => {
 
         // Hash the user password
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = bcrypt.hashedPassword(password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create a new user
         const newUser = new User({  username, email, password: hashedPassword });
+        // console.log(username, email, hashedPassword);
 
         // Add the date the trial will end
         newUser.trialExpires = new Date(new Date().getTime() + newUser.trialPeriod * 24 * 60 * 60 * 1000);
