@@ -66,7 +66,14 @@ const login = asyncHandler(async(req, res) => {
         throw new Error('Email or password is invalid');
     }
     //! Generate token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '3d' })
+    // Set the token into cookie (http only)
+    res.cookie('token', token), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000
+    };
     //! Send the response
     res.json({
         message: 'Login successfull',
