@@ -4,7 +4,7 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
 // ------------- Registration -------------
-const register = asyncHandler(async(req, res) => {
+const register = asyncHandler(async(req, res, next) => {
     try {
         const { username, email, password } = req.body;
         // Validate
@@ -45,6 +45,7 @@ const register = asyncHandler(async(req, res) => {
         });
     } catch(err) {
         throw new Error(err);
+        // next(err);
     }
 });
 
