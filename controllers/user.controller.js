@@ -35,13 +35,13 @@ const register = asyncHandler(async(req, res) => {
         await newUser.save();
 
         res.json({
-            username: newUser.username,
-            role: newUser.role,
-            email: newUser.email,
-            id: newUser._id,
-            // status: true,
-            // message: 'Registration was successfull',
-            // user: { username, email }
+            // username: newUser.username,
+            // role: newUser.role,
+            // email: newUser.email,
+            // id: newUser._id,
+            status: true,
+            message: 'Registration was successfull',
+            user: { username, email }
         });
     } catch(err) {
         throw new Error(err);

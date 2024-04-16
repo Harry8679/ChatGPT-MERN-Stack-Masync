@@ -14,11 +14,11 @@ userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role: {
-        type: String,
-        enum: ['admin', 'instructor', 'student'],
-        default: 'student', 
-    },
+    // role: {
+    //     type: String,
+    //     enum: ['admin', 'instructor', 'student'],
+    //     default: 'student', 
+    // },
     trialPeriod: {
         type: Number,
         default: 3 // 3 days
