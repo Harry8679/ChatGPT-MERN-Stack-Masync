@@ -6,6 +6,7 @@ const dbConnect = require('./utils/dbConnect');
 dbConnect();
 const userRouter = require('./routes/user.route');
 const { errorHandler } = require('./middlewares/error.middleware');
+const openAIRouter = require('./routes/openAI.route');
 dotenv.config();
 
 
@@ -16,6 +17,7 @@ app.use(cookieParser()); // pass the cookie automatically
 
 // ----- Routes -----
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/openai', openAIRouter);
 
 // ----- Error handler middleware -----
 app.use(errorHandler);
