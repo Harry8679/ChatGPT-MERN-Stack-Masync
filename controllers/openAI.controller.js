@@ -1,4 +1,7 @@
 const asyncHandler = require("express-async-handler");
+const ContentHistory = require('../models/ContentHistory.model');
+const User = require('../models/user.model');
+const axios = require('axios');
 const OpenAI = require("openai");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -7,32 +10,25 @@ const openai = new OpenAI({
 });
  
 const openAIController = asyncHandler(async (req, res) => {
-  const { prompt } = req.body;
- 
-  try {
-    if (!prompt) {
-        return res.status(400).json({ error: "Prompt is required." });
-      }
-     
-      const completion = await openai.chat.completions.create({
-        messages: [
-          { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: prompt },
-        ],
-        model: "gpt-3.5-turbo",
-        max_tokens: 700,
-      }, {
-        headers: {
-            Authorization: `Bearer ${process.env.OPEN_AI_API_KEY}`,
-            'Content-Type': 'application/json',
-        }
-      });
-     
-      console.log(completion.choices[0]);
-      res.json(completion.choices[0]);
-  } catch(error) {
-    throw new Error(error);
-  }
-});
+    const {prompt} = req.body
+    try {
+        const response = await axios.post("https://api.openai.com/v1/completions", {
+            model: "gpt-3.5-turbo-instruct",
+            prompt: `Generate a blog post for ${prompt}`,
+            max_tokens:700
+        }, {
+            headers: {
+                Authorization: `Bearer ${process.env.OPEN_AI_API_KEY}`,
+                'Content-Type' : "application/json"
+            }
+        })
+        // sent the response to user
+        const content = response?.data?.choices[0].text?.trim();
+        
+        res.status(200).json(content)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
  
 module.exports = { openAIController };

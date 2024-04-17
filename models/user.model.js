@@ -14,11 +14,6 @@ userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // role: {
-    //     type: String,
-    //     enum: ['admin', 'instructor', 'student'],
-    //     default: 'student', 
-    // },
     trialPeriod: {
         type: Number,
         default: 3 // 3 days
@@ -52,7 +47,7 @@ userSchema = new mongoose.Schema({
     history: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'History'
+            ref: 'ContentHistory'
         }
     ]
 }, {
