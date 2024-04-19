@@ -10,6 +10,10 @@ const openai = new OpenAI({
 });
  
 const openAIController = asyncHandler(async (req, res) => {
+    // console.log(req.user);
+    console.log('req.cookies.token', req.cookies.token);
+    console.log('------------------------------------------');
+    console.log('req', req);
     const {prompt} = req.body
     try {
         const response = await axios.post("https://api.openai.com/v1/completions", {
@@ -22,10 +26,20 @@ const openAIController = asyncHandler(async (req, res) => {
                 'Content-Type' : "application/json"
             }
         })
-        // sent the response to user
+        console.log('------------------------------------------');
+        // console.log(response.data);
+        // Send the response
         const content = response?.data?.choices[0].text?.trim();
-        
-        res.status(200).json(content)
+        // Create the history
+        const newContent = await ContentHistory.create({
+            user: req?.user?._id,
+            content,
+        });
+        // Push the content into the user
+        const userFound = await User.findById(req?.user?._id);
+        userFound.history.push(newContent?._id);
+        await userFound.save();
+        res.status(200).json(content);
     } catch (error) {
         throw new Error(error)
     }

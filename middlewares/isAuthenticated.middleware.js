@@ -8,7 +8,7 @@ const isAuthenticated = asyncHandler(async(req, res, next) => {
     // console.log('req.cookies.token', req.cookies.token);
     if (req.cookies.token){
         //! Verify the token
-        const decoded = jwt.sign(req.cookies.token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
         // console.log(decoded);
         // Add the user to the req object
         req.user = await User.findById(decoded?.id).select('-password');
